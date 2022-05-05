@@ -23,11 +23,15 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useStoreNotes } from "@/store/storeNotes";
 
- const emit = defineEmits(['deleteClicked'])
+ // const emit = defineEmits(['deleteClicked'])
+  
+  const storeNotes = useStoreNotes()
 
   const handleDeleteClicked = () => {
-    emit('deleteClicked', props.note.id)
+   
+    storeNotes.deleteNote(props.note.id)
   }
 /*
     props

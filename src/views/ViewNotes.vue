@@ -17,8 +17,7 @@
           <button
             @click="addNote"
             :disabled="!newNote"
-            class="button is-link has-background-success"
-           
+            class="button is-link has-background-success"        
           >
             Add New Note
           </button>
@@ -27,10 +26,9 @@
     </div>
 
     <Note 
-      v-for="note in notes" 
+      v-for="note in storeNotes.notes" 
       :key="note.id" 
-      :note="note"
-       @deleteClicked="deleteNote"
+      :note="note" 
     />
   </div>
 </template>
@@ -38,40 +36,24 @@
 <script setup>
 import { ref } from "vue";
 import Note from '@/components/Notes/Note.vue'
+import { useStoreNotes } from "../store/storeNotes";
+
+const storeNotes = useStoreNotes()
 
 const newNote = ref("");
 const newNoteRef = ref(null);
 
-const deleteNote = idToDelele => {
- // console.log("deleteNote clicked ", idToDelele )
- notes.value= notes.value.filter(note => { return note.id !== idToDelele })
+const deleteNote = idToDelele  => {
+ this.notes.value= this.notes.value.filter(note => { return note.id !== idToDelele })
 }
 const addNote = () => {
   console.log("%caddNote", "color: green;");
-  let currentDate = new Date().getTime(),
-    id = currentDate.toString();
 
-  let note = {
-    id,
-    content: newNote.value,
-  };
+  storeNotes.addNote(newNote.value)
 
-  console.log(note);
-
-  notes.value.unshift(note);
   newNote.value = "";
   newNoteRef.value.focus();
 };
 
-const notes = ref([
-  {
-    id: "id1",
-    content:
-      " Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quibusdam quia asperiores aspernatur labore quo voluptatibus a similique vitae ratione eveniet possimus unde eum quos. Mollitia rem atque nemo  reiciendis corporis.",
-  },
-  {
-    id: "id2",
-    content: "This is a shoretr note here",
-  },
-]);
+
 </script>
